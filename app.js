@@ -95,8 +95,13 @@ var trainAlerts;
 		  console.log("Connected correctly to server");
 			 var collection = db.collection('documents');
 			  // Insert some documents
+			collection.deleteOne({  }, function(err, result) {
+			assert.equal(err, null);
+			console.log("Removed the document with the field a equal to 3");
+				});
+			 // Insert some documents
 			for(var i=0; i<salemSchedule['table'].length; i++) {
-			collection.insertMany([
+			collection.insert([
 				{train_direction: salemSchedule['table'][i]['train_direction'], train_name: salemSchedule['table'][i]['train_name'], scheduleTime: salemSchedule['table'][i]['scheduleTime'],predictedTime:salemSchedule['table'][i]['predictedTime']}
 			  ], function(err, result) {
 				assert.equal(err, null);

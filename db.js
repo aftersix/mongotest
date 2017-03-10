@@ -7,16 +7,29 @@ var MongoClient = require('mongodb').MongoClient
 // Connection URL
 var url = 'mongodb://localhost:27017/myproject';
 // Use connect method to connect to the server
-MongoClient.connect(url, function(err, db) {
-  assert.equal(null, err);
-  console.log("Connected correctly to server");
 
-  insertDocuments(db, function() {
-    findDocuments(db, function() {
-      db.close();
-    });
-  });
-});
+
+
+function getRecords (callback){
+	MongoClient.connect(url, function(err, db) {
+	assert.equal(null, err);
+	console.log("Connected correctly to server");
+
+	  
+	   var collection = db.collection('documents');
+	  // Find some documents
+	  collection.find({}).toArray(function(err, docs) {
+		assert.equal(err, null);
+		console.log("Found the following records");
+		console.log(docs);
+		db.close()
+		callback(docs);
+		});      
+	; 
+	});
+}
+
+
 
 var insertDocuments = function(db, callback) {
   // Get the documents collection
@@ -69,4 +82,9 @@ var removeDocument = function(db, callback) {
     callback(result);
   });    
 }
+
+var array = getRecords(function(){
+	
+});
+
 
