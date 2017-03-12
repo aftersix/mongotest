@@ -1,4 +1,4 @@
-var train = require('./getTrain.js');
+
 
 
 var MongoClient = require('mongodb').MongoClient
@@ -10,7 +10,7 @@ var url = 'mongodb://localhost:27017/myproject';
 
 
 
-function getRecords (callback){
+function getRecords (){
 	MongoClient.connect(url, function(err, db) {
 	assert.equal(null, err);
 	console.log("Connected correctly to server");
@@ -23,11 +23,32 @@ function getRecords (callback){
 		console.log("Found the following records");
 		console.log(docs);
 		db.close()
-		callback(docs);
+		//callback(docs);
 		});      
 	; 
 	});
 }
+
+function deleteRecords (){
+	MongoClient.connect(url, function(err, db) {
+	assert.equal(null, err);
+	console.log("Connected correctly to server");
+
+	  var time = Math.round((new Date()).getTime() / 1000);
+		time = time-300;
+	   var collection = db.collection('documents');
+	  // Find some documents
+		try {
+		   collection.deleteMany( { "timestamp" : { $lt : time } } );
+		console.log(time);
+		} catch (e) {
+		   print (e);
+		}	  
+
+
+	});
+}
+
 
 
 
@@ -83,8 +104,13 @@ var removeDocument = function(db, callback) {
   });    
 }
 
-var array = getRecords(function(){
-	
-});
 
+
+var addRecords = function(){
+var toast = require('./app.js');
+};
+
+var array = setInterval(addRecords,6000);
+var array = setInterval(getRecords,6000);
+var array = setInterval(deleteRecords,60000);
 

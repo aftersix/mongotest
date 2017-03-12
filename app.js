@@ -102,7 +102,7 @@ var trainAlerts;
 			 // Insert some documents
 			for(var i=0; i<salemSchedule['table'].length; i++) {
 			collection.insert([
-				{train_direction: salemSchedule['table'][i]['train_direction'], train_name: salemSchedule['table'][i]['train_name'], scheduleTime: salemSchedule['table'][i]['scheduleTime'],predictedTime:salemSchedule['table'][i]['predictedTime']}
+				{timestamp: Math.round((new Date()).getTime() / 1000), train_direction: salemSchedule['table'][i]['train_direction'], train_name: salemSchedule['table'][i]['train_name'], scheduleTime: salemSchedule['table'][i]['scheduleTime'],predictedTime:salemSchedule['table'][i]['predictedTime']}
 			  ], function(err, result) {
 				assert.equal(err, null);
 				console.log("added the train times");
