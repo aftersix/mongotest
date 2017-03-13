@@ -22,6 +22,7 @@ console.log("ran predictions.js");
 var salemSchedule = {table: [] };
 var trainAlerts;
 
+module.exports.train = function (){
 	var salemPromise = new Promise((resolve, reject) => {
 		request({
 		url: 'http://realtime.mbta.com/developer/api/v2/predictionsbystop?api_key=wX9NwuHnZU2ToO7GmGR9uw&stop=Salem&format=json',
@@ -111,6 +112,7 @@ var trainAlerts;
 			db.close();
 		});
 	});
+}	
 
 	
 	

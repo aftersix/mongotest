@@ -1,5 +1,5 @@
-
-
+var train = require('./app.js');
+var Sugar = require('sugar');
 
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
@@ -7,6 +7,7 @@ var MongoClient = require('mongodb').MongoClient
 // Connection URL
 var url = 'mongodb://localhost:27017/myproject';
 // Use connect method to connect to the server
+
 
 
 
@@ -19,6 +20,28 @@ function getRecords (){
 	   var collection = db.collection('documents');
 	  // Find some documents
 	  collection.find({}).toArray(function(err, docs) {
+		assert.equal(err, null);
+		console.log("Found the following records");
+		console.log(docs);
+		db.close()
+		//callback(docs);
+		});      
+	; 
+	});
+}
+
+function getPassed (){
+	MongoClient.connect(url, function(err, db) {
+	assert.equal(null, err);
+	console.log("Connected correctly to server");
+
+	  var time = Math.round((new Date()).getTime());
+		time = Sugar.Date.format(new Date(time),  '{hh}:{mm}');
+		console.log(time);
+	   var collection = db.collection('documents');
+	  // Find some documents
+	  
+	  collection.find({ predictedTime: { $lt : time } }).toArray(function(err, docs) {
 		assert.equal(err, null);
 		console.log("Found the following records");
 		console.log(docs);
@@ -107,10 +130,12 @@ var removeDocument = function(db, callback) {
 
 
 var addRecords = function(){
-var toast = require('./app.js');
+
+train.train();
 };
 
-var array = setInterval(addRecords,6000);
-var array = setInterval(getRecords,6000);
-var array = setInterval(deleteRecords,60000);
+setInterval(addRecords,60000);
+//var array = setInterval(getRecords,6000);
+setInterval(deleteRecords,60000);
+setInterval(getPassed,6000);
 
